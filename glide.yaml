@@ -1,0 +1,5 @@
+package: github.com/sapcc/omnitruck-cache
+import:
+- package: github.com/majewsky/schwift
+  repo: https://github.com/databus23/schwift
+  version: patch-1

@@ -1,0 +1,25 @@
+hash: 948d0adfcc773675b13f45c215d78fd51a7ad0cc3d2aa3bcff917ac3e8126594
+updated: 2018-05-11T15:00:35.600232+02:00
+imports:
+- name: github.com/gophercloud/gophercloud
+  version: c7ca48da8eafab13e1835090a1147e64cfc10174
+  subpackages:
+  - openstack
+  - openstack/identity/v2/tenants
+  - openstack/identity/v2/tokens
+  - openstack/identity/v3/tokens
+  - openstack/utils
+  - pagination
+- name: github.com/gorilla/handlers
+  version: 13a38d26174b16d5b4bf6f1094c1389ec9879572
+- name: github.com/im7mortal/kmutex
+  version: 17d9eb0825556292e68a6235a401e77b7c3f4b54
+- name: github.com/jpillora/longestcommon
+  version: adb9d91ee629dd8304c9f9d7c91977b9d7e61a35
+- name: github.com/majewsky/schwift
+  version: c3c9ebde4034560f1bc8e188a1d6071b3cf34824
+  repo: https://github.com/databus23/schwift
+  subpackages:
+  - capabilities
+  - gopherschwift
+testImports: []
