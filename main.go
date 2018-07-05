@@ -61,6 +61,9 @@ func main() {
 	log.Printf("Using %s cache backend", cacheBackendName)
 
 	proxy := OmnitruckProxy{Cache: cacheBackend, BackendURL: omnitruckURL, mutex: kmutex.New()}
+	http.HandleFunc("/health", func(rw http.ResponseWriter, _ *http.Request) {
+		rw.Write([]byte("ok"))
+	})
 	http.Handle("/", &proxy)
 
 	listen := ":8080"

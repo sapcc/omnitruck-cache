@@ -7,3 +7,6 @@ build:
 
 docker:
 	docker build -t $(IMAGE):$(VERSION) .
+
+push:
+	docker push $(IMAGE):$(VERSION)
