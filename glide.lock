@@ -1,8 +1,8 @@
-hash: 948d0adfcc773675b13f45c215d78fd51a7ad0cc3d2aa3bcff917ac3e8126594
-updated: 2018-05-11T15:00:35.600232+02:00
+hash: f808045df394d502e02c4c599df46e9658ddd30e46c77042efd666ec3bd241f6
+updated: 2018-07-05T10:39:42.689737+02:00
 imports:
 - name: github.com/gophercloud/gophercloud
-  version: c7ca48da8eafab13e1835090a1147e64cfc10174
+  version: f362408b73ca43218b531b7eba702b1003fe063a
   subpackages:
   - openstack
   - openstack/identity/v2/tenants
@@ -17,8 +17,7 @@ imports:
 - name: github.com/jpillora/longestcommon
   version: adb9d91ee629dd8304c9f9d7c91977b9d7e61a35
 - name: github.com/majewsky/schwift
-  version: c3c9ebde4034560f1bc8e188a1d6071b3cf34824
-  repo: https://github.com/databus23/schwift
+  version: 0eab6bf51e2fe22de6c877e01149b49bba283792
   subpackages:
   - capabilities
   - gopherschwift

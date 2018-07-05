@@ -66,6 +66,14 @@ func NewSwiftCache(container string) (*SwiftCache, error) {
 		return nil, errors.New("Container name required")
 	}
 	authOptions, err := openstack.AuthOptionsFromEnv()
+
+	if os.Getenv("OS_PROJECT_DOMAIN_NAME") != "" {
+		authOptions.Scope = &gophercloud.AuthScope{
+			ProjectName: os.Getenv("OS_PROJECT_NAME"),
+			DomainName:  os.Getenv("OS_PROJECT_DOMAIN_NAME"),
+		}
+	}
+
 	if err != nil {
 		return nil, err
 	}
