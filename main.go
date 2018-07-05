@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"time"
 
 	"github.com/gorilla/handlers"
 	"github.com/im7mortal/kmutex"
@@ -61,6 +62,7 @@ func main() {
 	log.Printf("Using %s cache backend", cacheBackendName)
 
 	proxy := OmnitruckProxy{Cache: cacheBackend, BackendURL: omnitruckURL, mutex: kmutex.New()}
+	proxy.client.Timeout = 15 * time.Minute
 	http.HandleFunc("/health", func(rw http.ResponseWriter, _ *http.Request) {
 		rw.Write([]byte("ok"))
 	})
