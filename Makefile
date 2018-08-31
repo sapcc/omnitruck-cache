@@ -1,6 +1,6 @@
 PKG:=github.com/sapcc/omnitruck-cache
 IMAGE:=sapcc/omnitruck-cache
-VERSION:=0.1
+VERSION:=0.3
 
 build:
 	go build -o bin/omnitruck-cache $(PKG)

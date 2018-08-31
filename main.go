@@ -1,9 +1,12 @@
 package main
 
 import (
+	"crypto/sha256"
+	"encoding/hex"
 	"encoding/json"
 	"flag"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -98,6 +101,7 @@ func (o *OmnitruckProxy) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 				response.Version,
 			)))
 		} else {
+			log.Println(err)
 			rw.WriteHeader(500)
 			rw.Write([]byte(err.Error()))
 		}
@@ -150,6 +154,26 @@ func (o *OmnitruckProxy) proxy(req *http.Request) (*OmnitruckResponse, error) {
 			return nil, fmt.Errorf("Fetching %s failed: %v", omni.Url, err)
 		}
 		defer resp.Body.Close()
+
+		tmpfile, err := ioutil.TempFile("", "chef")
+		if err != nil {
+			return nil, fmt.Errorf("Unable to create temp file: %s", err)
+		}
+
+		defer os.Remove(tmpfile.Name())
+
+		hash := sha256.New()
+		multi := io.MultiWriter(tmpfile, hash)
+		if _, err = io.Copy(multi, resp.Body); err != nil {
+			return nil, fmt.Errorf("Failed to download %s: %s", omni.Url, err)
+		}
+		if err = tmpfile.Close(); err != nil {
+			return nil, err
+		}
+		computedHash := hex.EncodeToString(hash.Sum(nil))
+		if computedHash != omni.Sha256 {
+			return nil, fmt.Errorf("Sha256 hash of downloaded file does not match. Expected %s, Got %s", omni.Sha256, computedHash)
+		}
 
 		cacheUrl, err = o.Cache.Store(packageURL.EscapedPath(), resp.Body)
 		if err != nil {
