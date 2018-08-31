@@ -175,7 +175,13 @@ func (o *OmnitruckProxy) proxy(req *http.Request) (*OmnitruckResponse, error) {
 			return nil, fmt.Errorf("Sha256 hash of downloaded file does not match. Expected %s, Got %s", omni.Sha256, computedHash)
 		}
 
-		cacheUrl, err = o.Cache.Store(packageURL.EscapedPath(), resp.Body)
+		f, err := os.Open(tmpfile.Name())
+		if err != nil {
+			return nil, err
+		}
+		cacheUrl, err = o.Cache.Store(packageURL.EscapedPath(), f)
+		f.Close()
+
 		if err != nil {
 			return nil, fmt.Errorf("Failed to store %s in cache: %v ", omni.Url, err)
 		}
