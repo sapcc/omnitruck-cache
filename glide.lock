@@ -1,5 +1,5 @@
 hash: f808045df394d502e02c4c599df46e9658ddd30e46c77042efd666ec3bd241f6
-updated: 2018-07-05T10:39:42.689737+02:00
+updated: 2018-09-03T14:13:00.804114+02:00
 imports:
 - name: github.com/gophercloud/gophercloud
   version: f362408b73ca43218b531b7eba702b1003fe063a
@@ -17,7 +17,7 @@ imports:
 - name: github.com/jpillora/longestcommon
   version: adb9d91ee629dd8304c9f9d7c91977b9d7e61a35
 - name: github.com/majewsky/schwift
-  version: 0eab6bf51e2fe22de6c877e01149b49bba283792
+  version: f9be896d5fd937c64a95797ced7ce887103518c8
   subpackages:
   - capabilities
   - gopherschwift

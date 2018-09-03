@@ -1,8 +1,6 @@
 package main
 
 import (
-	"crypto/md5"
-	"encoding/hex"
 	"errors"
 	"io"
 	"net/url"
@@ -124,21 +122,7 @@ func (s *SwiftCache) Store(key string, tmpfile io.ReadSeeker) (*url.URL, error) 
 
 	object := s.container.Object(key)
 
-	//calculate md5 hash
-	md5Hash := md5.New()
-	if _, err := io.Copy(md5Hash, tmpfile); err != nil {
-		return nil, err
-	}
-	md5String := hex.EncodeToString(md5Hash.Sum(nil))
-	//rewind reader
-	if _, err := tmpfile.Seek(0, 0); err != nil {
-		return nil, err
-	}
-
-	hdr := schwift.NewObjectHeaders()
-	hdr.Etag().Set(md5String)
-
-	if err := object.Upload(tmpfile, nil, hdr.ToOpts()); err != nil {
+	if err := object.Upload(tmpfile, nil, nil); err != nil {
 		return nil, err
 	}
 	objectURL, err := object.URL()
