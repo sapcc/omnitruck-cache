@@ -1,6 +1,8 @@
 package main
 
 import (
+	"crypto/md5"
+	"encoding/hex"
 	"errors"
 	"io"
 	"net/url"
@@ -16,7 +18,7 @@ import (
 
 type Cache interface {
 	Get(key string) (*url.URL, bool, error)
-	Store(key string, object io.Reader) (*url.URL, error)
+	Store(key string, file io.ReadSeeker) (*url.URL, error)
 }
 
 type LocalCache struct {
@@ -34,7 +36,7 @@ func (l *LocalCache) Get(key string) (*url.URL, bool, error) {
 	return url, true, err
 }
 
-func (l *LocalCache) Store(key string, object io.Reader) (*url.URL, error) {
+func (l *LocalCache) Store(key string, tmpfile io.ReadSeeker) (*url.URL, error) {
 	path := filepath.Join(l.CacheDir, key)
 
 	url, err := url.Parse(l.BaseURL + key)
@@ -51,7 +53,7 @@ func (l *LocalCache) Store(key string, object io.Reader) (*url.URL, error) {
 	}
 	defer file.Close()
 
-	_, err = io.Copy(file, object)
+	_, err = io.Copy(file, tmpfile)
 	return url, err
 
 }
@@ -116,13 +118,27 @@ func (s *SwiftCache) Get(key string) (*url.URL, bool, error) {
 	return nil, false, nil
 }
 
-func (s *SwiftCache) Store(key string, data io.Reader) (*url.URL, error) {
+func (s *SwiftCache) Store(key string, tmpfile io.ReadSeeker) (*url.URL, error) {
 
 	key = strings.TrimLeft(key, "/")
 
 	object := s.container.Object(key)
 
-	if err := object.Upload(data, nil, nil); err != nil {
+	//calculate md5 hash
+	md5Hash := md5.New()
+	if _, err := io.Copy(md5Hash, tmpfile); err != nil {
+		return nil, err
+	}
+	md5String := hex.EncodeToString(md5Hash.Sum(nil))
+	//rewind reader
+	if _, err := tmpfile.Seek(0, 0); err != nil {
+		return nil, err
+	}
+
+	hdr := schwift.NewObjectHeaders()
+	hdr.Etag().Set(md5String)
+
+	if err := object.Upload(tmpfile, nil, hdr.ToOpts()); err != nil {
 		return nil, err
 	}
 	objectURL, err := object.URL()

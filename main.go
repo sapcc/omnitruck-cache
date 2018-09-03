@@ -79,6 +79,9 @@ func main() {
 func (o *OmnitruckProxy) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 
 	response, err := o.proxy(req)
+	if err != nil {
+		log.Println("ERROR:", err)
+	}
 
 	if req.Header.Get("Accept") == "application/json" {
 		rw.Header().Set("Content-Type", "application/json")
@@ -101,7 +104,6 @@ func (o *OmnitruckProxy) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
 				response.Version,
 			)))
 		} else {
-			log.Println(err)
 			rw.WriteHeader(500)
 			rw.Write([]byte(err.Error()))
 		}
@@ -174,17 +176,18 @@ func (o *OmnitruckProxy) proxy(req *http.Request) (*OmnitruckResponse, error) {
 		if computedHash != omni.Sha256 {
 			return nil, fmt.Errorf("Sha256 hash of downloaded file does not match. Expected %s, Got %s", omni.Sha256, computedHash)
 		}
+		log.Printf("Downloaded and verified %s", omni.Url)
 
-		f, err := os.Open(tmpfile.Name())
-		if err != nil {
-			return nil, err
+		if tmpfile, err = os.Open(tmpfile.Name()); err != nil {
+			return nil, fmt.Errorf("Failed to open temporay file for reading: %s", err)
 		}
-		cacheUrl, err = o.Cache.Store(packageURL.EscapedPath(), f)
-		f.Close()
+		cacheUrl, err = o.Cache.Store(packageURL.EscapedPath(), tmpfile)
+		tmpfile.Close()
 
 		if err != nil {
 			return nil, fmt.Errorf("Failed to store %s in cache: %v ", omni.Url, err)
 		}
+		log.Printf("Stored %s artifact in %s cache", omni.Url, cacheBackendName)
 	}
 	omni.Url = cacheUrl.String()
 	return &omni, nil
