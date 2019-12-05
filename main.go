@@ -2,6 +2,7 @@ package main
 
 import (
 	"crypto/sha256"
+	"crypto/tls"
 	"encoding/hex"
 	"encoding/json"
 	"flag"
@@ -12,6 +13,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"strconv"
 	"time"
 
 	"github.com/gorilla/handlers"
@@ -45,6 +47,15 @@ func init() {
 func main() {
 
 	flag.Parse()
+
+	//The OMNITRUCK_INSECURE flag can be used to get cache to work through
+	//mitmproxy (which is very useful for development and debugging).
+	if insecure, _ := strconv.ParseBool(os.Getenv("OMNITRUCK_INSECURE")); insecure {
+		http.DefaultTransport.(*http.Transport).TLSClientConfig = &tls.Config{
+			InsecureSkipVerify: true,
+		}
+		http.DefaultClient.Transport = http.DefaultTransport
+	}
 
 	var cacheBackend Cache
 	switch cacheBackendName {
