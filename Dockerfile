@@ -1,4 +1,4 @@
-FROM golang:1.10.2-alpine3.7
+FROM golang:1.11.5-alpine3.7
 
 WORKDIR /go/src/github.com/sapcc/omnitruck-cache
 RUN apk add --no-cache curl git make
