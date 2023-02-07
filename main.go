@@ -141,7 +141,7 @@ func (o *OmnitruckProxy) proxy(req *http.Request) (*OmnitruckResponse, error) {
 		return nil, fmt.Errorf("Failed to read backend response: %v", err)
 	}
 	if response.StatusCode >= 400 {
-		return nil, fmt.Errorf("Backend responded with %s: %s", response.Status, []byte(responseBytes))
+		return nil, fmt.Errorf("Backend responded for url %s with %s: %s", backendURL, response.Status, []byte(responseBytes))
 	}
 	var omni OmnitruckResponse
 	if err := json.Unmarshal(responseBytes, &omni); err != nil {
