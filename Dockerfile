@@ -1,17 +1,12 @@
-FROM golang:1.10.2-alpine3.7
+FROM alpine:3.7 AS base
+RUN apk --no-cache add ca-certificates
+RUN mkdir -p /tmp/cache_tmp
 
-WORKDIR /go/src/github.com/sapcc/omnitruck-cache
-RUN apk add --no-cache curl git make
-RUN curl https://glide.sh/get | sh
-
-ADD glide.yaml glide.lock /go/src/github.com/sapcc/omnitruck-cache/
-RUN glide install -v
-
-ADD . /go/src/github.com/sapcc/omnitruck-cache
-RUN make build
-
-FROM alpine:3.7
+FROM scratch
 LABEL source_repository="https://github.com/sapcc/omnitruck-cache"
-RUN apk add --no-cache curl
-COPY --from=0 /go/src/github.com/sapcc/omnitruck-cache/bin/omnitruck-cache /usr/local/bin/omnitruck-cache
-ENTRYPOINT ["/usr/local/bin/omnitruck-cache"]
+
+COPY --from=base  /tmp/cache_tmp /tmp
+COPY --from=base /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+COPY bin/omnitruck-cache /omnitruck-cache
+
+ENTRYPOINT [ "/omnitruck-cache" ]
