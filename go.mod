@@ -3,10 +3,10 @@ module github.com/sapcc/omnitruck-cache
 go 1.17
 
 require (
-	github.com/gophercloud/gophercloud v0.7.0
+	github.com/gophercloud/gophercloud v1.7.0
 	github.com/gorilla/handlers v1.5.1
 	github.com/im7mortal/kmutex v1.0.1-0.20190514200450-95588b379f4a
-	github.com/majewsky/schwift v0.0.0-20180906125654-e1b3d5e2efc9
+	github.com/majewsky/schwift v1.3.0
 )
 
 require (
