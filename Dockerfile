@@ -1,4 +1,4 @@
-FROM alpine:3.7 AS base
+FROM alpine:3.20 AS base
 RUN apk --no-cache add ca-certificates
 RUN mkdir -p /tmp/cache_tmp
 
