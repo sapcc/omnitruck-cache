@@ -193,7 +193,7 @@ func (o *OmnitruckProxy) proxy(req *http.Request) (*OmnitruckResponse, error) {
 			return nil, fmt.Errorf("Failed to open temporay file for reading: %s", err)
 		}
 		cacheUrl, err = o.Cache.Store(packageURL.EscapedPath(), tmpfile)
-		tmpfile.Close()
+		defer tmpfile.Close()
 
 		if err != nil {
 			return nil, fmt.Errorf("Failed to store %s in cache: %v ", omni.Url, err)
