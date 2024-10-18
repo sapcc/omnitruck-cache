@@ -2,6 +2,9 @@ github.com/felixge/httpsnoop v1.0.1 h1:lvB5Jl89CsZtGIWuTcDM1E/vkVs49/Ml7JJe07l8S
 github.com/felixge/httpsnoop v1.0.1/go.mod h1:m8KPJKqk1gH5J9DgRY2ASl2lWCfGKXixSwevea8zH2U=
 github.com/gophercloud/gophercloud v0.7.0 h1:vhmQQEM2SbnGCg2/3EzQnQZ3V7+UCGy9s8exQCprNYg=
 github.com/gophercloud/gophercloud v0.7.0/go.mod h1:gmC5oQqMDOMO1t1gq5DquX/yAU808e/4mzjjDA76+Ss=
+github.com/gophercloud/gophercloud v1.14.1 h1:DTCNaTVGl8/cFu58O1JwWgis9gtISAFONqpMKNg/Vpw=
+github.com/gophercloud/gophercloud v1.14.1/go.mod h1:aAVqcocTSXh2vYFZ1JTvx4EQmfgzxRcNupUfxZbBNDM=
+github.com/gophercloud/gophercloud/v2 v2.2.0/go.mod h1:f2hMRC7Kakbv5vM7wSGHrIPZh6JZR60GVHryJlF/K44=
 github.com/gorilla/handlers v1.4.3-0.20191118182537-597a9be2cbe9 h1:n/7NZK4BgvRvscX7pZwLxQMwakzE154JJcQKBJg5Xz0=
 github.com/gorilla/handlers v1.4.3-0.20191118182537-597a9be2cbe9/go.mod h1:Qkdc/uu4tH4g6mTK6auzZ766c4CA0Ng8+o/OAirnOIQ=
 github.com/gorilla/handlers v1.5.1 h1:9lRY6j8DEeeBT10CvO9hGW0gmky0BprnvDI5vfhUHH4=
